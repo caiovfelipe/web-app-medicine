@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Porta-Remédios</title>
+    <!-- Tailwind CSS para um design moderno e responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonte Inter do Google Fonts para uma melhor aparência -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos personalizados */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+        }
+        /* Efeito de transição suave para os inputs */
+        input, select {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <main class="w-full max-w-md mx-auto p-8 bg-white rounded-2xl shadow-xl">
+        
+        <!-- Seção do Logo -->
+        <div class="flex justify-center mb-6">
+            <div class="bg-sky-100 text-sky-600 p-4 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-capsule" viewBox="0 0 16 16">
+                    <path d="M1.828 8.9-3.59 11.24a4 4 0 1 1 5.656-5.657l3.59 2.345a4 4 0 1 1-5.656 5.657ZM5.343 4.243a3 3 0 1 0-4.243 4.243 3 3 0 0 0 4.243-4.243Z"/>
+                </svg>
+            </div>
+        </div>
+
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Porta-Remédios Eletrônico</h1>
+        <p class="text-center text-gray-500 mb-8">Agende a liberação dos medicamentos.</p>
+
+        <!-- Formulário para agendamento -->
+        <form id="remedioForm" class="space-y-6">
+            
+            <!-- Campo: Nome do Remédio/Paciente -->
+            <div>
+                <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">Nome do Remédio ou Paciente</label>
+                <input type="text" id="nome" name="nome" placeholder="Ex: Paracetamol ou João da Silva" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+            </div>
+
+            <!-- Campo: Horário de Início -->
+            <div>
+                <label for="horarioInicio" class="block text-sm font-medium text-gray-700 mb-1">Horário de Início</label>
+                <input type="time" id="horarioInicio" name="horarioInicio" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+            </div>
+
+            <!-- Campo: Frequência -->
+            <div>
+                <label for="frequencia" class="block text-sm font-medium text-gray-700 mb-1">Frequência (de quanto em quanto tempo)</label>
+                <select id="frequencia" name="frequencia" required class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                    <option value="1">A cada 1 hora</option>
+                    <option value="2">A cada 2 horas</option>
+                    <option value="3">A cada 3 horas</option>
+                    <option value="4">A cada 4 horas</option>
+                    <option value="6">A cada 6 horas</option>
+                    <option value="8">A cada 8 horas</option>
+                    <option value="12">A cada 12 horas</option>
+                    <option value="24" selected>A cada 24 horas</option>
+                </select>
+            </div>
+
+            <!-- Campo: Quantidade de Pílulas -->
+            <div>
+                <label for="quantidade" class="block text-sm font-medium text-gray-700 mb-1">Quantidade de pílulas</label>
+                <input type="number" id="quantidade" name="quantidade" min="1" value="1" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+            </div>
+
+            <!-- Botão de Enviar -->
+            <button type="submit" class="w-full bg-sky-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-transform transform hover:scale-105">
+                Enviar Agendamento
+            </button>
+        </form>
+
+        <!-- Mensagem de sucesso (inicialmente oculta) -->
+        <div id="successMessage" class="hidden mt-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg text-center">
+            <p><strong>Agendamento enviado com sucesso!</strong></p>
+            <p class="text-sm mt-1">Os dados foram registrados no console.</p>
+        </div>
+
+    </main>
+
+    <script>
+        // Seleciona o formulário e a mensagem de sucesso
+        const form = document.getElementById('remedioForm');
+        const successMessage = document.getElementById('successMessage');
+
+        // Adiciona um "ouvinte" para o evento de envio do formulário
+        form.addEventListener('submit', function(event) {
+            // Previne o comportamento padrão do formulário (que é recarregar a página)
+            event.preventDefault();
+
+            // Cria um objeto com os dados do formulário
+            const dadosDoFormulario = {
+                nome: form.n ome.value,
+                horarioInicio: form.horarioInicio.value,
+                frequencia: form.frequencia.value, // em horas
+                quantidade: form.quantidade.value
+            };
+
+            // Exibe os dados no console do navegador.
+            // É aqui que você fará a integração com o Firebase no futuro!
+            console.log("Dados para enviar ao Firebase:", dadosDoFormulario);
+
+            // Mostra a mensagem de sucesso
+            successMessage.classList.remove('hidden');
+
+            // Opcional: esconde a mensagem após alguns segundos
+            setTimeout(() => {
+                successMessage.classList.add('hidden');
+            }, 5000); // 5 segundos
+            
+            // Opcional: Limpa o formulário após o envio
+            // form.reset();
+        });
+    </script>
+</body>
+</html>
