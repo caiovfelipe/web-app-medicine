@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Porta-Remédios</title>
+    <!-- Tailwind CSS para um design moderno e responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonte Inter do Google Fonts para uma melhor aparência -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos personalizados */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+        }
+        /* Efeito de transição suave para os inputs */
+        input, select, button {
+            transition: all 0.3s ease-in-out;
+        }
+        /* Estilo para o estado de loading do botão */
+        button:disabled {
+            cursor: not-allowed;
+            background-color: #60a5fa; /* Um azul mais claro */
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <div class="w-full max-w-md mx-auto">
+        <!-- TELA DE LOGIN (aparece quando o usuário não está logado) -->
+        <div id="loginContainer" class="text-center p-8 bg-white rounded-2xl shadow-xl">
+            <div class="flex justify-center mb-6">
+                <div class="bg-sky-100 text-sky-600 p-4 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-capsule" viewBox="0 0 16 16">
+                        <path d="M1.828 8.9-3.59 11.24a4 4 0 1 1 5.656-5.657l3.59 2.345a4 4 0 1 1-5.656 5.657ZM5.343 4.243a3 3 0 1 0-4.243 4.243 3 3 0 0 0 4.243-4.243Z"/>
+                    </svg>
+                </div>
+            </div>
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Bem-vindo!</h1>
+            <p class="text-center text-gray-500 mb-8">Faça login para continuar.</p>
+            <button id="loginButton" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
+                    <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.274a4.782 4.782 0 0 0 0 3.123h.001c.632 1.866 2.405 3.274 4.492 3.274 1.097 0 2.082-.373 2.848-1.075l2.289 2.289A8.001 8.001 0 0 1 8 16Z"/>
+                </svg>
+                Entrar com Google
+            </button>
+        </div>
+
+        <!-- CONTEÚDO PRINCIPAL (aparece após o login) -->
+        <main id="appContent" class="hidden w-full p-8 bg-white rounded-2xl shadow-xl">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <p class="text-sm text-gray-600">Bem-vindo(a),</p>
+                    <p id="userName" class="font-bold text-gray-800"></p>
+                </div>
+                <button id="logoutButton" class="text-sm text-red-500 hover:text-red-700 font-semibold">Sair</button>
+            </div>
+            
+            <h1 class="text-2xl font-bold text-center text-gray-800 mb-2">Agendar Remédio</h1>
+            <hr class="mb-6">
+
+            <!-- Formulário para agendamento -->
+            <form id="remedioForm" class="space-y-6">
+                <!-- Campos do formulário (iguais aos anteriores) -->
+                <div>
+                    <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">Nome do Remédio ou Paciente</label>
+                    <input type="text" id="nome" name="nome" placeholder="Ex: Paracetamol ou João da Silva" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                </div>
+                <div>
+                    <label for="horarioInicio" class="block text-sm font-medium text-gray-700 mb-1">Horário de Início</label>
+                    <input type="time" id="horarioInicio" name="horarioInicio" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                </div>
+                <div>
+                    <label for="frequencia" class="block text-sm font-medium text-gray-700 mb-1">Frequência</label>
+                    <select id="frequencia" name="frequencia" required class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                        <option value="1">A cada 1 hora</option>
+                        <option value="6">A cada 6 horas</option>
+                        <option value="8">A cada 8 horas</option>
+                        <option value="12">A cada 12 horas</option>
+                        <option value="24" selected>A cada 24 horas</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="quantidade" class="block text-sm font-medium text-gray-700 mb-1">Quantidade de pílulas</label>
+                    <input type="number" id="quantidade" name="quantidade" min="1" value="1" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                </div>
+                <button type="submit" id="submitButton" class="w-full bg-sky-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-transform transform hover:scale-105">
+                    Enviar Agendamento
+                </button>
+            </form>
+            <div id="successMessage" class="hidden mt-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg text-center"></div>
+            <div id="errorMessage" class="hidden mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-center"></div>
+        </main>
+    </div>
+
+    <!-- Scripts do Firebase -->
+    <script type="module">
+        // PASSO 1: Importar as funções necessárias dos SDKs do Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        // PASSO 2: Colar aqui o objeto de configuração do seu projeto Firebase
+        const firebaseConfig = {
+            apiKey: "SUA_API_KEY_DO_CONSOLE", // ATENÇÃO: Ainda falta preencher este valor!
+            authDomain: "tcc-pilulas.firebaseapp.com",
+            projectId: "tcc-pilulas",
+            storageBucket: "tcc-pilulas.appspot.com", // CORRIGIDO: O padrão correto é .appspot.com
+            messagingSenderId: "73637827998",
+            appId: "SEU_APP_ID_DO_CONSOLE" // ATENÇÃO: Ainda falta preencher este valor!
+        };
+
+        // PASSO 3: Inicializar o Firebase e os serviços
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // --- Variáveis Globais e Seletores de Elementos ---
+        const loginContainer = document.getElementById('loginContainer');
+        const appContent = document.getElementById('appContent');
+        const loginButton = document.getElementById('loginButton');
+        const logoutButton = document.getElementById('logoutButton');
+        const userNameDisplay = document.getElementById('userName');
+        const form = document.getElementById('remedioForm');
+        const submitButton = document.getElementById('submitButton');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        let currentUser; // Para armazenar os dados do usuário logado
+
+        // --- Lógica de Autenticação ---
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                loginContainer.classList.add('hidden');
+                appContent.classList.remove('hidden');
+                userNameDisplay.textContent = user.displayName;
+            } else {
+                currentUser = null;
+                loginContainer.classList.remove('hidden');
+                appContent.classList.add('hidden');
+            }
+        });
+
+        loginButton.addEventListener('click', async () => {
+            const provider = new GoogleAuthProvider();
+            try {
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                console.error("Erro ao fazer login:", error);
+                alert("Não foi possível fazer o login. Tente novamente.");
+            }
+        });
+        
+        logoutButton.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+            } catch (error) {
+                console.error("Erro ao fazer logout:", error);
+            }
+        });
+
+        // --- Lógica do Formulário ---
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            if (!currentUser) {
+                alert("Você precisa estar logado para enviar um agendamento.");
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Enviando...';
+            successMessage.classList.add('hidden');
+            errorMessage.classList.add('hidden');
+            
+            // --- ALTERAÇÃO PRINCIPAL AQUI ---
+            // 1. Pega o horário como texto (ex: "14:30")
+            const horarioString = form.horarioInicio.value; 
+            // 2. Quebra o texto no caractere ":" em um array (ex: ["14", "30"])
+            const partesDoHorario = horarioString.split(':');
+            // 3. Converte cada parte para um número inteiro
+            const horaInicioNum = parseInt(partesDoHorario[0], 10);
+            const minutoInicioNum = parseInt(partesDoHorario[1], 10);
+            
+            const dadosDoFormulario = {
+                userId: currentUser.uid, 
+                nome: form.nome.value,
+                // Em vez de enviar o texto, enviamos os números separados
+                horaInicio: horaInicioNum,       
+                minutoInicio: minutoInicioNum,    
+                frequencia: parseInt(form.frequencia.value),
+                quantidade: parseInt(form.quantidade.value),
+                timestamp: new Date()
+            };
+
+            try {
+                const docRef = await addDoc(collection(db, "agendamentos"), dadosDoFormulario);
+                console.log("Documento escrito com ID: ", docRef.id);
+                successMessage.textContent = 'Agendamento salvo com sucesso!';
+                successMessage.classList.remove('hidden');
+                form.reset();
+            } catch (e) {
+                console.error("Erro ao adicionar documento: ", e);
+                errorMessage.textContent = 'Erro ao salvar agendamento. Tente novamente.';
+                errorMessage.classList.remove('hidden');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Enviar Agendamento';
+            }
+        });
+    </script>
+</body>
+</html>
