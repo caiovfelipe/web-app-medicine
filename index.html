@@ -14,31 +14,26 @@
         /* Estilos personalizados */
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
         }
         /* Efeito de transição suave para os inputs */
         input, select, button {
             transition: all 0.3s ease-in-out;
         }
-        /* Estilo para o estado de loading do botão */
-        button:disabled {
-            cursor: not-allowed;
-            background-color: #60a5fa; /* Um azul mais claro */
-        }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen">
+<body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-100 to-indigo-200">
 
     <div class="w-full max-w-md mx-auto">
         <!-- TELA DE LOGIN (aparece quando o usuário não está logado) -->
         <div id="loginContainer" class="text-center p-8 bg-white rounded-2xl shadow-xl">
             <div class="flex justify-center mb-6">
-                <!-- SUBSTITUA A URL ABAIXO PELA URL DO SEU LOGO -->
-                <img src="Group 3.svg" alt="Logo Pessoal" class="w-24 h-24 rounded-full">
+                <!-- MUDANÇA: Cor do logo alterada para a cor base -->
+                <img src="https://placehold.co/100x100/8D9FE7/ffffff?text=Logo" alt="Logo Pessoal" class="w-24 h-24 rounded-full">
             </div>
             <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Bem-vindo!</h1>
             <p class="text-center text-gray-500 mb-8">Faça login para continuar.</p>
-            <button id="loginButton" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-3">
+            <!-- MUDANÇA: Botão de login com a nova cor -->
+            <button id="loginButton" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 flex items-center justify-center gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
                     <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.274a4.782 4.782 0 0 0 0 3.123h.001c.632 1.866 2.405 3.274 4.492 3.274 1.097 0 2.082-.373 2.848-1.075l2.289 2.289A8.001 8.001 0 0 1 8 16Z"/>
                 </svg>
@@ -61,18 +56,18 @@
 
             <!-- Formulário para agendamento -->
             <form id="remedioForm" class="space-y-6">
-                <!-- Campos do formulário (iguais aos anteriores) -->
+                <!-- MUDANÇA: Cor de foco dos campos alterada -->
                 <div>
                     <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">Nome do Remédio ou Paciente</label>
-                    <input type="text" id="nome" name="nome" placeholder="Ex: Paracetamol ou João da Silva" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                    <input type="text" id="nome" name="nome" placeholder="Ex: Paracetamol ou João da Silva" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                 </div>
                 <div>
                     <label for="horarioInicio" class="block text-sm font-medium text-gray-700 mb-1">Horário de Início</label>
-                    <input type="time" id="horarioInicio" name="horarioInicio" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                    <input type="time" id="horarioInicio" name="horarioInicio" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                 </div>
                 <div>
                     <label for="frequencia" class="block text-sm font-medium text-gray-700 mb-1">Frequência</label>
-                    <select id="frequencia" name="frequencia" required class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                    <select id="frequencia" name="frequencia" required class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                         <option value="1">A cada 1 hora</option>
                         <option value="6">A cada 6 horas</option>
                         <option value="8">A cada 8 horas</option>
@@ -82,9 +77,10 @@
                 </div>
                 <div>
                     <label for="quantidade" class="block text-sm font-medium text-gray-700 mb-1">Quantidade de pílulas</label>
-                    <input type="number" id="quantidade" name="quantidade" min="1" value="1" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                    <input type="number" id="quantidade" name="quantidade" min="1" value="1" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                 </div>
-                <button type="submit" id="submitButton" class="w-full bg-sky-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-transform transform hover:scale-105">
+                <!-- MUDANÇA: Botão de envio com a nova cor -->
+                <button type="submit" id="submitButton" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:scale-105 disabled:bg-indigo-300 disabled:cursor-not-allowed">
                     Enviar Agendamento
                 </button>
             </form>
@@ -92,7 +88,6 @@
             <div id="errorMessage" class="hidden mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-center"></div>
         </main>
     </div>
-
     <!-- Scripts do Firebase -->
     <script type="module">
         // PASSO 1: Importar as funções necessárias dos SDKs do Firebase
