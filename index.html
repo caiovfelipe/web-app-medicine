@@ -100,23 +100,26 @@
     <script type="module">
         // PASSO 1: Importar as funções necessárias dos SDKs do Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        // MUDANÇA: Importando funções do Realtime Database em vez do Firestore
+        import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
         import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
         // PASSO 2: Colar aqui o objeto de configuração do seu projeto Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyDPzI_4cYJc7OSaraMF1EmmyJjp1zHHv90",
+            apiKey: "SUA_API_KEY_DO_CONSOLE", // ATENÇÃO: Ainda falta preencher este valor!
             authDomain: "tcc-pilulas.firebaseapp.com",
-            databaseURL: "https://tcc-pilulas-default-rtdb.firebaseio.com",
             projectId: "tcc-pilulas",
-            storageBucket: "tcc-pilulas.firebasestorage.app",
+            storageBucket: "tcc-pilulas.appspot.com",
             messagingSenderId: "73637827998",
-            appId: "1:73637827998:web:4ca9591b486774c5bfb28f"
+            appId: "SEU_APP_ID_DO_CONSOLE", // ATENÇÃO: Ainda falta preencher este valor!
+            // ADICIONADO: URL do Realtime Database para conexão correta
+            databaseURL: "https://tcc-pilulas-default-rtdb.firebaseio.com"
         };
 
         // PASSO 3: Inicializar o Firebase e os serviços
         const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        // MUDANÇA: Inicializando o Realtime Database
+        const db = getDatabase(app);
         const auth = getAuth(app);
 
         // --- Variáveis Globais e Seletores de Elementos ---
@@ -131,7 +134,7 @@
         const errorMessage = document.getElementById('errorMessage');
         let currentUser; // Para armazenar os dados do usuário logado
 
-        // --- Lógica de Autenticação ---
+        // --- Lógica de Autenticação (sem alterações) ---
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -164,7 +167,7 @@
             }
         });
 
-        // --- Lógica do Formulário ---
+        // --- Lógica do Formulário (MODIFICADA PARA REALTIME DATABASE) ---
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
 
@@ -178,34 +181,31 @@
             successMessage.classList.add('hidden');
             errorMessage.classList.add('hidden');
             
-            // --- ALTERAÇÃO PRINCIPAL AQUI ---
-            // 1. Pega o horário como texto (ex: "14:30")
             const horarioString = form.horarioInicio.value; 
-            // 2. Quebra o texto no caractere ":" em um array (ex: ["14", "30"])
             const partesDoHorario = horarioString.split(':');
-            // 3. Converte cada parte para um número inteiro
             const horaInicioNum = parseInt(partesDoHorario[0], 10);
             const minutoInicioNum = parseInt(partesDoHorario[1], 10);
-            
-            const dadosDoFormulario = {
-                userId: currentUser.uid, 
-                nome: form.nome.value,
-                // Em vez de enviar o texto, enviamos os números separados
-                horaInicio: horaInicioNum,       
-                minutoInicio: minutoInicioNum,    
-                frequencia: parseInt(form.frequencia.value),
-                quantidade: parseInt(form.quantidade.value),
-                timestamp: new Date()
-            };
+            const quantidadeNum = parseInt(form.quantidade.value, 10);
+
+            // MUDANÇA: Objeto para atualizar múltiplos caminhos no Realtime Database
+            const updates = {};
+            updates['/Agendamento/Hora'] = horaInicioNum;
+            updates['/Agendamento/Minuto'] = minutoInicioNum;
+            updates['/Numero/NumeroDePilulas'] = quantidadeNum;
+            // Também salvamos os outros dados em um caminho separado para não interferir com o ESP32
+            updates['/Detalhes/Nome'] = form.nome.value;
+            updates['/Detalhes/Frequencia'] = parseInt(form.frequencia.value, 10);
 
             try {
-                const docRef = await addDoc(collection(db, "agendamentos"), dadosDoFormulario);
-                console.log("Documento escrito com ID: ", docRef.id);
+                // MUDANÇA: Usando a função update() do Realtime Database
+                await update(ref(db), updates);
+                
+                console.log("Dados atualizados no Realtime Database!");
                 successMessage.textContent = 'Agendamento salvo com sucesso!';
                 successMessage.classList.remove('hidden');
                 form.reset();
             } catch (e) {
-                console.error("Erro ao adicionar documento: ", e);
+                console.error("Erro ao atualizar dados: ", e);
                 errorMessage.textContent = 'Erro ao salvar agendamento. Tente novamente.';
                 errorMessage.classList.remove('hidden');
             } finally {
@@ -216,3 +216,4 @@
     </script>
 </body>
 </html>
+
